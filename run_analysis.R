@@ -42,13 +42,18 @@ meanStdX = full[,meanStdIndeces]
 
 averages = meanStdX
 
-#Get the average for each variable
-for (i in ncol(averages)) {
-   averages[1,i] = mean(averages[,i]) 
-}
-
-averages = averages[1,]
+#Add the columns for subject and activity
+meanStdX$Subject = full$Subject
+meanStdX$Activity = full$Activity
 
 
+#Put subject and activity at the front of the data frame
+meanStdX = meanStdX[,c(67,68,1:66)]
+
+result = aggregate(meanStdX[,3:ncol(meanStdX)],list(Activity=meanStdX$Activity, Subject=meanStdX$Subject), mean)
+
+
+#write results to a csv file
+write.csv(result, file = "output.csv")
 
 
